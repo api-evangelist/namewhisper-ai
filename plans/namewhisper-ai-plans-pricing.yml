@@ -1,0 +1,57 @@
+generated: '2026-09-19'
+method: searched
+source: https://namewhisper.ai/docs
+sources:
+- https://namewhisper.ai/docs
+- https://namewhisper.ai/guide
+- https://namewhisper.ai/terms
+- https://namewhisper.ai/.well-known/x402
+- https://namewhisper.ai/api
+note: >-
+  There are no subscription tiers, no signup and no API key: every one of the 44 tools is free to call today
+  ("All 44 tools become available with no API key"). The commercial model is (a) an on-chain interface fee on
+  the transactions the service builds, published as a schedule in /docs and /terms with the collecting contracts
+  named in security.txt, and (b) two agent-payment rails, x402 and MPP, that are wired but dormant - the fee
+  switch is off, every tool's currentPrice is 0 and GET /api's x402 challenge asks for maxAmountRequired "0".
+  /pricing returns 404; the fee schedule at /guide#fees is the closest thing to a pricing page.
+plan_count: 1
+currency: USD
+plans:
+- name: Free (all tools)
+  price: 0
+  currency: USD
+  period: none
+  included_quota: all 44 MCP tools and the A2A endpoint; 200 req/min/IP and 60 req/min/session
+  overage: none
+  account_required: false
+  api_key_required: false
+  note: '"discovery and read tools remain free permanently" (/docs); transaction tools are free until the x402/MPP fee switch is enabled.'
+interface_fees:
+  source: https://namewhisper.ai/guide#fees
+  terms_date: '2026-08-02'
+  schedule:
+  - action: Selling via a Name Whisper listing
+    fee: 1%
+    paid_by: seller, deducted from proceeds
+  - action: Accepting an offer made on Name Whisper
+    fee: 1%
+    paid_by: seller, deducted from proceeds
+  - action: Accepting a bid from another marketplace
+    fee: none (that marketplace's own fee applies)
+  - action: Registering a name (single or bulk)
+    fee: 1% on top of the ENS price
+    note: fixed at 100 bps in NWBulkRegistrar (bulk-register.namewhisper.eth)
+  - action: Renewing a name (single or bulk)
+    fee: 1% on top of the ENS price
+    note: fixed at 100 bps in NWBulkRenewalWithReferral (bulk-renewal.namewhisper.eth)
+  - action: Accepting a swap
+    fee: flat $5, priced in ETH at settlement
+  - action: Buying a listed name, transfers, records, wrapping, subnames
+    fee: none (gas only)
+  fee_sink: NameWhisperFees 0x3bF6062A38fCD72F0A3829AC837FCd6c7b9dA1d2 (fees.namewhisper.eth)
+  disclosure: '"The fee is disclosed in the interface before you sign" and "Every recipe returns the fee broken out so a client can show it before signing."'
+agent_payments:
+  x402: {network: base, chainId: 8453, asset: USDC, enabled: false, current_price: '0', facilitator: 'https://x402.org/facilitator'}
+  mpp: {network: tempo, asset: pathUSD, enabled: false, testnet: true}
+  marketplace_fee_pct_advertised: 2.5
+  note: marketplaceFeePct 2.5 appears in the /api 402 body's accepts[] entry while the docs and terms state 1%; recorded as observed, the terms figure is the published commitment.

@@ -1,0 +1,20 @@
+# Name Whisper (namewhisper.ai): ENS name search, valuation, and Seaport-native trading.
+#
+# Name Whisper never takes custody of names or funds. Every transaction is built
+# for the user to sign in their own wallet, and trades settle through Seaport on
+# the shared on-chain orderbook.
+#
+# Our deployed contracts, all source-verified on Etherscan and Sourcify, each
+# resolving to its own ENS name:
+#   NWBulkRegistrar            0xe887AAB539ab3f54f7b5db29cBdec1378eb307fA  bulk-register.namewhisper.eth  (registration)
+#   NWBulkRenewalWithReferral  0x7fc0AF1e92268cF3D58D6351acCE6bAFCbBFC23C  bulk-renewal.namewhisper.eth  (renewal)
+#   NameWhisperFees            0x3bF6062A38fCD72F0A3829AC837FCd6c7b9dA1d2  fees.namewhisper.eth  (interface fee sink)
+#   NameWhisperZone            0x987aca12610Bf831103953CFF70Fc950C2D0aAe3  zone.namewhisper.eth  (Seaport 1.6 pass-through zone)
+#
+# Fee schedule and contract roles: https://namewhisper.ai/guide#fees
+
+Contact: mailto:support@namewhisper.ai
+Expires: 2027-09-19T22:19:45.802Z
+Preferred-Languages: en
+Canonical: https://namewhisper.ai/.well-known/security.txt
+Policy: https://namewhisper.ai/terms

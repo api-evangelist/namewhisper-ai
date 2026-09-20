@@ -1,0 +1,75 @@
+generated: '2026-09-19'
+method: searched
+probe: true
+source: https://namewhisper.ai/privacy
+sources:
+- https://namewhisper.ai/privacy
+- https://namewhisper.ai/terms
+- https://namewhisper.ai/.well-known/security.txt
+- https://namewhisper.ai/robots.txt
+signals: {}
+note: >-
+  No horizontal regulatory signal that meets the substance bar is published. The privacy policy (last updated
+  March 21, 2026) is concrete about what is collected (Ethereum address via SIWE, opt-in email, search history,
+  watchlist, a JWT in localStorage), names Supabase-hosted PostgreSQL and Google Analytics as the processors,
+  and offers deletion "through the app" for email and "contact us on X at @NameWhisper_AI" for full account
+  deletion - a route, but not a data-subject-request page or endpoint, so it is recorded below rather than as
+  a signal. No accessibility statement, subprocessor table, DPA, data-residency statement, incident SLA,
+  transparency report, SBOM, support period or AI-transparency disclosure exists. robots.txt's
+  "Content-Signal: search=yes, ai-train=yes, ai-input=yes" is a content-use preference, not a regulatory
+  disclosure. An empty signals map is the measurement.
+probed_absent:
+- signal: data_subject_request
+  urls:
+  - {url: 'https://namewhisper.ai/privacy/requests', status: 404}
+  - {url: 'https://namewhisper.ai/privacy', status: 200}
+  note: 'Section 7 "Data Deletion" of the privacy policy: email deletable in-app; full deletion by contacting @NameWhisper_AI on X. A stated route via a social DM, not a request page or API; not credited.'
+- signal: subprocessors
+  urls:
+  - {url: 'https://namewhisper.ai/legal/subprocessors', status: 404}
+  - {url: 'https://namewhisper.ai/privacy', status: 200}
+  note: The privacy policy names Supabase (database hosting) and Google Analytics (GA4) inline; not a dated subprocessor table.
+- signal: sbom
+  urls:
+  - {url: 'https://namewhisper.ai/security/sbom', status: 404}
+  note: Never derived - search only. The MCP server repository has a package-lock.json, which is a lockfile and not a bill of materials.
+- signal: accessibility_conformance
+  urls:
+  - {url: 'https://namewhisper.ai/accessibility', status: 404}
+  - {url: 'https://namewhisper.ai/accessibility/vpat', status: 404}
+- signal: incident_notification
+  urls:
+  - {url: 'https://namewhisper.ai/legal/dpa', status: 404}
+- signal: data_residency
+  urls:
+  - {url: 'https://namewhisper.ai/docs/data-residency', status: 404}
+  note: Headers show a Railway origin (x-railway-edge jfk1) behind Cloudflare and the privacy policy names Supabase; neither is a published residency commitment.
+- signal: ai_transparency
+  urls:
+  - {url: 'https://namewhisper.ai/ai/transparency', status: 404}
+  note: The valuation engine is described as algorithmic and the terms say valuations are "estimates, not appraisals" - a disclaimer, not an AI-transparency disclosure.
+- signal: training_data_summary
+  urls:
+  - {url: 'https://namewhisper.ai/ai/transparency', status: 404}
+- signal: transparency_report
+  urls:
+  - {url: 'https://namewhisper.ai/transparency', status: 404}
+- signal: notice_and_action
+  urls:
+  - {url: 'https://namewhisper.ai/legal/report-content', status: 404}
+- signal: global_privacy_control
+  urls:
+  - {url: 'https://namewhisper.ai/privacy', status: 200}
+  note: The privacy text makes no GPC statement; honored is not set from a header probe.
+- signal: support_lifetime
+  urls:
+  - {url: 'https://namewhisper.ai/docs', status: 200}
+  note: No support period or versioning policy stated anywhere.
+- signal: exit_assistance
+  urls:
+  - {url: 'https://namewhisper.ai/privacy', status: 200}
+  note: All name data is public on-chain by nature and the account holds only a watchlist and search history; no export or switching commitment is stated.
+- signal: age_assurance
+  urls:
+  - {url: 'https://namewhisper.ai/terms', status: 200}
+  note: The terms carry no age statement.

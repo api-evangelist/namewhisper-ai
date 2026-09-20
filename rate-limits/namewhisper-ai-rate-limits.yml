@@ -1,0 +1,44 @@
+generated: '2026-09-19'
+method: searched
+source: https://namewhisper.ai/llms-full.txt
+sources:
+- https://namewhisper.ai/llms-full.txt
+- https://namewhisper.ai/guide
+limit_count: 2
+description: >-
+  Name Whisper publishes two limits for the MCP endpoint in its agent-readable reference and repeats them in the
+  integration guide ("Rate limits: 200 req/min/IP, 60 req/min/session"). Neither the exhaustion status code nor
+  any response header is documented, and no rate-limit header appeared on any of the live responses captured on
+  2026-09-19, so a client learns its remaining budget only by being throttled.
+limits:
+- scope: per-ip
+  window: 1 minute
+  limit: 200
+  unit: requests
+  applies_to: https://namewhisper.ai/mcp
+  source: https://namewhisper.ai/llms-full.txt
+- scope: per-session
+  window: 1 minute
+  limit: 60
+  unit: requests
+  applies_to: https://namewhisper.ai/mcp (mcp-session-id)
+  source: https://namewhisper.ai/llms-full.txt
+  note: sessions idle out after 30 minutes
+response_headers:
+  observed: []
+  checked_for: [RateLimit-Limit, RateLimit-Remaining, RateLimit-Reset, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After]
+  note: >-
+    None of the seven headers appeared on the initialize, tools/list, agent-card, api-catalog or /api responses.
+    The app runs on Railway behind Cloudflare ("server: cloudflare" and x-railway-edge response headers), so edge
+    throttling may also apply and is unsignalled.
+exhaustion_status: null
+enforcement:
+  documented: true
+  headers_documented: false
+x-evidence:
+  fetched: '2026-09-19'
+  probes:
+  - {url: 'https://namewhisper.ai/mcp', method: POST initialize, status: 200, rate_limit_headers: none}
+  - {url: 'https://namewhisper.ai/mcp', method: POST tools/list, status: 200, rate_limit_headers: none}
+  - {url: 'https://namewhisper.ai/a2a', method: POST message/send, status: 200, rate_limit_headers: none}
+  - {url: 'https://namewhisper.ai/api', method: GET, status: 402, rate_limit_headers: none}

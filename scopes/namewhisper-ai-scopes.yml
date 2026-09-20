@@ -1,0 +1,31 @@
+generated: '2026-09-19'
+method: searched
+source: https://namewhisper.ai/.well-known/oauth-authorization-server
+docs: https://namewhisper.ai/auth.md
+description: >-
+  Scopes published in the provider's RFC 8414 authorization-server metadata and repeated in the RFC 9728
+  protected-resource metadata for https://namewhisper.ai/mcp. There is no OpenAPI to derive from
+  (derive-oauth-scopes.py found no oauth2 scheme), so this file is read from the metadata documents. The scopes
+  are declared but no document explains which tools each scope covers; the natural reading - from the server
+  card's free/transaction split - is that mcp.read maps to the 19 FREE read tools and mcp.transact to the 25
+  TRANSACTION tools, but that mapping is an inference and is labelled as such below.
+schemes:
+- name: namewhisper-authorization-server
+  source: well-known/namewhisper-ai-oauth-authorization-server.json
+  issuer: https://namewhisper.ai
+  flows:
+  - flow: erc8128_signed_request
+    authorizationUrl: https://namewhisper.ai/oauth/authorize
+    tokenUrl: https://namewhisper.ai/oauth/token
+    note: Non-standard grant type; no bearer tokens are issued, identity rides on each signed request.
+scopes:
+- scope: mcp.read
+  description: Declared in scopes_supported; no published definition.
+  inferred_coverage: the 19 FREE / read-only tools (inference from the server card, not a provider statement)
+  flows: [erc8128_signed_request]
+  sources: [well-known/namewhisper-ai-oauth-authorization-server.json, well-known/namewhisper-ai-oauth-protected-resource.json]
+- scope: mcp.transact
+  description: Declared in scopes_supported; no published definition.
+  inferred_coverage: the 25 TRANSACTION tools that build unsigned calldata (inference, not a provider statement)
+  flows: [erc8128_signed_request]
+  sources: [well-known/namewhisper-ai-oauth-authorization-server.json, well-known/namewhisper-ai-oauth-protected-resource.json]

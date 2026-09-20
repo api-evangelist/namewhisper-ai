@@ -1,0 +1,137 @@
+generated: '2026-09-19'
+method: probed
+source: >-
+  The /.well-known/ sweep in well-known/namewhisper-ai-well-known.yml, live JSON-RPC probes of
+  https://namewhisper.ai/mcp and https://namewhisper.ai/a2a, the tools/list result in mcp/, and
+  https://namewhisper.ai/docs, /guide, /auth.md and /terms (all 2026-09-19).
+description: >-
+  Cross-cutting and domain standards Name Whisper's public surface conforms to, each with the evidence that
+  decided it. There is no OpenAPI, so nothing is derived from a REST contract; every entry rests on a fetched
+  document, an observed response, or the tools/list schemas. No certification or compliance program (SOC 2,
+  ISO 27001, GDPR programme) is published anywhere on the site, so no Compliance pointer is emitted.
+standards:
+- id: mcp
+  conforms: true
+  version: 2025-06-18 (negotiated); 2024-11-05 also advertised
+  evidence: >-
+    POST initialize to https://namewhisper.ai/mcp returned protocolVersion 2025-06-18, serverInfo nw-terminal
+    2.0.0 and an mcp-session-id header; notifications/initialized returned 202; tools/list returned 44 tools each
+    with a draft-07 inputSchema and readOnlyHint/destructiveHint/idempotentHint annotations, over streamable-http
+    (text/event-stream). Listed on the official MCP Registry as ai.namewhisper/ens-tools v1.2.0.
+- id: a2a
+  conforms: true
+  version: 0.3.0 (declared)
+  evidence: >-
+    Agent card at /.well-known/agent-card.json and /.well-known/agent.json with protocolVersion 0.3.0, capabilities
+    object, 44-entry skills array, preferredTransport JSONRPC; message/send on https://namewhisper.ai/a2a answered
+    anonymously with a Message result. Graded conformant in a2a/namewhisper-ai-a2a.yml.
+- id: json-rpc-2.0
+  conforms: true
+  evidence: >-
+    Both endpoints speak JSON-RPC 2.0 - responses carry jsonrpc "2.0" and echo the id; unimplemented methods return
+    the reserved -32601 (resources/list and prompts/list on /mcp, tasks/get on /a2a). The docs name -32042 as the
+    payment-required code.
+- id: rfc8414-oauth-authorization-server-metadata
+  conforms: partial
+  evidence: >-
+    /.well-known/oauth-authorization-server is served (issuer, authorization_endpoint, token_endpoint,
+    scopes_supported, response_types_supported, grant_types_supported) but the values are non-standard -
+    grant erc8128_signed_request, response type none, no bearer tokens issued - so a stock OAuth client cannot
+    complete a flow. The document shape conforms; the protocol it advertises is ERC-8128.
+- id: rfc9728-oauth-protected-resource-metadata
+  conforms: true
+  evidence: >-
+    /.well-known/oauth-protected-resource is served for resource https://namewhisper.ai/mcp with
+    authorization_servers, bearer_methods_supported, scopes_supported, resource_documentation and
+    resource_signing_alg_values_supported. The MCP server card and ai-plugin.json both point at it.
+- id: oauth2
+  conforms: false
+  evidence: >-
+    No standard OAuth 2.0 grant is offered (grant_types_supported [erc8128_signed_request], "no bearer tokens are
+    issued"); the endpoints are anonymous and identity is per-request ERC-8128 signatures.
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404; the issuer is not an OpenID Provider.
+- id: erc-8128-signed-http-requests
+  conforms: true
+  evidence: >-
+    /.well-known/erc8128 declares supported true, version 1.0, endpoint https://namewhisper.ai/mcp, maxValiditySec
+    300, replayProtection true, smartContractWallets true; the protected-resource document lists signing algs
+    ES256K, EIP191, EIP1271. Not exercised with a signed request (no wallet in this pass).
+- id: rfc9727-api-catalog
+  conforms: true
+  evidence: >-
+    /.well-known/api-catalog returns application/linkset+json with a linkset anchored at https://namewhisper.ai
+    carrying service-desc (MCP server card) and service-meta (auth, OAuth discovery, agent-skills index, x402,
+    llms.txt, llms-full.txt) relations; responses also carry a Link rel="api-catalog" header.
+- id: rfc9116-security-txt
+  conforms: true
+  evidence: >-
+    /.well-known/security.txt is served with Contact (mailto:support@namewhisper.ai), Expires (2027-09-19, under
+    the one-year guidance), Preferred-Languages, Canonical and Policy (https://namewhisper.ai/terms). Not signed.
+- id: rfc8615-well-known
+  conforms: true
+  evidence: Twelve distinct documents are served under /.well-known/ on the apex (well-known/namewhisper-ai-well-known.yml); the negative-control path 404s.
+- id: llms-txt
+  conforms: true
+  evidence: /llms.txt (3.2 KB, H1 + blockquote + sectioned link lists) and /llms-full.txt are served; robots.txt and the api-catalog reference both.
+- id: content-signal
+  conforms: true
+  evidence: 'robots.txt carries "Content-Signal: search=yes, ai-train=yes, ai-input=yes" and allows / to every agent (only /admin, /calibrate, /review-digits, /strategy, /drafts/ and /api/ are disallowed).'
+- id: x402
+  conforms: advertised-dormant
+  evidence: >-
+    GET /api returns 402 with an x402Version 1 accepts[] block (scheme exact, network base, chainId 8453, USDC,
+    facilitator https://x402.org/facilitator) whose maxAmountRequired is "0" and payTo is the zero address;
+    /.well-known/x402 reports both x402 and MPP supported but enabled false and activeProtocol null. The protocol is
+    wired; no payment is currently required for any tool.
+- id: mpp-machine-payments-protocol
+  conforms: advertised-dormant
+  evidence: /.well-known/x402 declares MPP 1.0 on the Tempo rail (pathUSD, testnet true) with enabled false and recipient null.
+- id: rfc9457
+  conforms: false
+  evidence: >-
+    Errors are JSON-RPC error objects on both endpoints, a flat {"error": "..."} JSON body on an unsessioned POST
+    to /mcp (HTTP 400), and an x402 body on /api. No application/problem+json anywhere.
+- id: rfc8594-sunset
+  conforms: false
+  evidence: No Deprecation or Sunset headers observed and no deprecation policy published (lifecycle/namewhisper-ai-lifecycle.yml).
+- id: idempotency
+  conforms: partial
+  evidence: >-
+    No Idempotency-Key header. Two real mechanisms exist and both are scoped: (1) nine tools carry the server's
+    idempotentHint true annotation (cancel_listing, cancel_offer, set_ens_records, bulk_set_records, set_primary_name,
+    set_resolver, manage_fuses, approve_operator, reclaim_name); (2) ERC-8128 signed requests carry nonce replay
+    protection with a 300 s validity window, which applies only to callers who opt in. Detail in conventions/.
+domain_standards:
+- id: ens-ensip-25-agent-registration
+  conforms: true
+  standard: ENSIP-25 (ENS agent-registration text records)
+  evidence: >-
+    The set_ens_records and bulk_set_records inputSchemas in mcp/namewhisper-ai-mcp-tools-list.json accept an
+    ENSIP-25 agent-registration record ("agentRegistration shorthand"), provision_agent_identity's description
+    binds a name to the canonical ERC-8004 IdentityRegistry per ENSIP-25, and get_agent_reputation reads the
+    ENSIP-25 binding live. The agent card description names ENSIP-25 explicitly.
+- id: erc-8004-trustless-agents
+  conforms: true
+  standard: ERC-8004 (agent identity / reputation registry)
+  evidence: >-
+    register_agent's inputSchema (agentURI, route adapter|direct) registers an ENS name as an ERC-8004 agent
+    identity on Ethereum mainnet; get_agent_reputation and search_agent_directory read the ERC-8004 registry. The
+    OAuth metadata's agent_auth block describes registration as "an on-chain agent identity (ENSIP-25 / ERC-8004)".
+- id: seaport-1.6
+  conforms: true
+  standard: OpenSea Seaport 1.6 order protocol
+  evidence: >-
+    create_listing returns unsigned Seaport OrderComponents, cancel_listing/cancel_offer return Seaport cancel()
+    calldata, accept_offer returns fulfillOrder(), batch_purchase uses fulfillAvailableAdvancedOrders; security.txt
+    names the deployed NameWhisperZone contract as a "Seaport 1.6 pass-through zone". Orders are FULL_OPEN so
+    they are fillable across the shared Seaport orderbook including OpenSea.
+- id: ensip-15-normalization
+  conforms: true
+  standard: ENSIP-15 ENS name normalisation
+  evidence: The names skill (skills/namewhisper-ai-ens-names.md) and check_availability's description state labels are validated per ENSIP-15 (code-point counting, no hand-rolled validation).
+- id: erc-8217
+  conforms: true
+  standard: ERC-8217 (agent NFT bound to an ENS name - the "adapter" route)
+  evidence: register_agent's route enum defaults to adapter, which the tool description says "binds the agent to the name via ERC-8217".

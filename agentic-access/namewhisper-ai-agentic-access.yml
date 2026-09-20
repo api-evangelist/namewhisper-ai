@@ -1,0 +1,785 @@
+generated: '2026-09-19'
+method: searched
+source: https://namewhisper.ai/mcp tools/list annotations (2026-09-19) + https://namewhisper.ai/.well-known/x402
+  tool classifications
+description: 'Recommended x-agentic-access execution contracts for Name Whisper''s 44 MCP tools. There is no OpenAPI,
+  so the heuristic derive-agentic-access.py could not run; instead the action-class is read from the provider''s
+  OWN per-tool annotations (readOnlyHint / destructiveHint / idempotentHint in tools/list) and the FREE / TRANSACTION
+  classification in /.well-known/x402 - which is why the method is searched rather than generated. consequence is
+  API Evangelist''s reading: every non-read tool returns unsigned calldata and moves nothing until a wallet signs
+  it, but once signed the result is an irreversible Ethereum transaction that moves names or ETH, so the tools that
+  register, renew, buy, sell, transfer, wrap or bind identities are rated physical with human-in-the-loop required
+  (the wallet signature IS the human step in the provider''s own design: ''Every transaction is built for the user
+  to sign in their own wallet''). Record-, resolver-, approval- and cancel-class tools are rated write. TTL ceilings
+  mirror the agentic-access Spectral ruleset. A governance starting point; audience is left null to bind per deployment.
+  See research/curity/agentic-governance/.'
+audience: null
+custody_note: 'The provider is non-custodial: the MCP server signs nothing and holds no keys (security.txt, terms,
+  auth.md). The consequence ratings describe what the calldata does once the caller signs it.'
+summary:
+  operations: 44
+  by_action_class:
+    connected: 19
+    acting: 25
+  by_consequence:
+    read: 19
+    write: 7
+    physical: 18
+  human_in_the_loop_required: 18
+  provider_annotations:
+    readOnlyHint_true: 19
+    destructiveHint_true: 19
+    idempotentHint_true: 9
+operations:
+- tool: search_ens_names
+  required:
+  - query
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    provider-annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: FREE
+- tool: enumerate_entities
+  required:
+  - category
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    provider-annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: FREE
+- tool: get_name_details
+  required:
+  - name
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    provider-annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: FREE
+- tool: check_availability
+  required:
+  - names
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    provider-annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: FREE
+- tool: get_similar_names
+  required:
+  - name
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    provider-annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: FREE
+- tool: get_valuation
+  required:
+  - name
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    provider-annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: FREE
+- tool: get_market_activity
+  required: []
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    provider-annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: FREE
+- tool: get_expiring_names
+  required: []
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    provider-annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: FREE
+- tool: wash_check
+  required: []
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    provider-annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: FREE
+- tool: get_wallet_portfolio
+  required:
+  - wallet
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    provider-annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: FREE
+- tool: find_alpha
+  required: []
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    provider-annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: FREE
+- tool: get_primary_name
+  required:
+  - walletAddress
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    provider-annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: FREE
+- tool: provision_agent_identity
+  required:
+  - purpose
+  - walletAddress
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    provider-annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: FREE
+- tool: make_offer
+  required:
+  - name
+  - amountEth
+  - walletAddress
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    token:
+      max-ttl: 300
+    audit: required
+    escalation:
+    - purpose-required
+    - human-in-the-loop
+    human-in-the-loop: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: TRANSACTION
+- tool: purchase_name
+  required:
+  - name
+  - walletAddress
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    token:
+      max-ttl: 300
+    audit: required
+    escalation:
+    - purpose-required
+    - human-in-the-loop
+    human-in-the-loop: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: true
+      idempotentHint: false
+    provider-classification: TRANSACTION
+- tool: bulk_register
+  required:
+  - names
+  - walletAddress
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    token:
+      max-ttl: 300
+    audit: required
+    escalation:
+    - purpose-required
+    - human-in-the-loop
+    human-in-the-loop: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: true
+      idempotentHint: false
+    provider-classification: TRANSACTION
+- tool: create_listing
+  required:
+  - name
+  - priceEth
+  - walletAddress
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    token:
+      max-ttl: 300
+    audit: required
+    escalation:
+    - purpose-required
+    - human-in-the-loop
+    human-in-the-loop: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: TRANSACTION
+- tool: cancel_listing
+  required:
+  - orderHash
+  - walletAddress
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    token:
+      max-ttl: 900
+    audit: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: true
+      idempotentHint: true
+    provider-classification: TRANSACTION
+- tool: cancel_offer
+  required:
+  - orderHash
+  - walletAddress
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    token:
+      max-ttl: 900
+    audit: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: true
+      idempotentHint: true
+    provider-classification: TRANSACTION
+- tool: accept_offer
+  required:
+  - orderHash
+  - walletAddress
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    token:
+      max-ttl: 300
+    audit: required
+    escalation:
+    - purpose-required
+    - human-in-the-loop
+    human-in-the-loop: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: true
+      idempotentHint: false
+    provider-classification: TRANSACTION
+- tool: batch_purchase
+  required:
+  - names
+  - walletAddress
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    token:
+      max-ttl: 300
+    audit: required
+    escalation:
+    - purpose-required
+    - human-in-the-loop
+    human-in-the-loop: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: true
+      idempotentHint: false
+    provider-classification: TRANSACTION
+- tool: sweep
+  required:
+  - walletAddress
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    token:
+      max-ttl: 300
+    audit: required
+    escalation:
+    - purpose-required
+    - human-in-the-loop
+    human-in-the-loop: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: true
+      idempotentHint: false
+    provider-classification: TRANSACTION
+- tool: batch_create_listings
+  required:
+  - listings
+  - walletAddress
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    token:
+      max-ttl: 300
+    audit: required
+    escalation:
+    - purpose-required
+    - human-in-the-loop
+    human-in-the-loop: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: TRANSACTION
+- tool: renew_ens_name
+  required:
+  - names
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    token:
+      max-ttl: 300
+    audit: required
+    escalation:
+    - purpose-required
+    - human-in-the-loop
+    human-in-the-loop: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: true
+      idempotentHint: false
+    provider-classification: TRANSACTION
+- tool: transfer_ens_name
+  required:
+  - name
+  - fromAddress
+  - toAddress
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    token:
+      max-ttl: 300
+    audit: required
+    escalation:
+    - purpose-required
+    - human-in-the-loop
+    human-in-the-loop: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: true
+      idempotentHint: false
+    provider-classification: TRANSACTION
+- tool: set_ens_records
+  required:
+  - name
+  - records
+  - walletAddress
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    token:
+      max-ttl: 900
+    audit: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: true
+      idempotentHint: true
+    provider-classification: TRANSACTION
+- tool: bulk_set_records
+  required:
+  - nameRecords
+  - walletAddress
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    token:
+      max-ttl: 900
+    audit: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: true
+      idempotentHint: true
+    provider-classification: TRANSACTION
+- tool: bulk_transfer_ens_names
+  required:
+  - transfers
+  - fromAddress
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    token:
+      max-ttl: 300
+    audit: required
+    escalation:
+    - purpose-required
+    - human-in-the-loop
+    human-in-the-loop: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: true
+      idempotentHint: false
+    provider-classification: TRANSACTION
+- tool: set_primary_name
+  required:
+  - name
+  - walletAddress
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    token:
+      max-ttl: 900
+    audit: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: true
+      idempotentHint: true
+    provider-classification: TRANSACTION
+- tool: set_resolver
+  required:
+  - name
+  - resolver
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    token:
+      max-ttl: 900
+    audit: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: true
+      idempotentHint: true
+    provider-classification: TRANSACTION
+- tool: manage_ens_name
+  required:
+  - name
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    provider-annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: FREE
+- tool: wrap_name
+  required:
+  - name
+  - owner
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    token:
+      max-ttl: 300
+    audit: required
+    escalation:
+    - purpose-required
+    - human-in-the-loop
+    human-in-the-loop: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: true
+      idempotentHint: false
+    provider-classification: TRANSACTION
+- tool: unwrap_name
+  required:
+  - name
+  - owner
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    token:
+      max-ttl: 300
+    audit: required
+    escalation:
+    - purpose-required
+    - human-in-the-loop
+    human-in-the-loop: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: true
+      idempotentHint: false
+    provider-classification: TRANSACTION
+- tool: manage_fuses
+  required:
+  - name
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    token:
+      max-ttl: 300
+    audit: required
+    escalation:
+    - purpose-required
+    - human-in-the-loop
+    human-in-the-loop: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: true
+      idempotentHint: true
+    provider-classification: TRANSACTION
+- tool: mint_subnames
+  required:
+  - parentName
+  - subnames
+  - walletAddress
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    token:
+      max-ttl: 300
+    audit: required
+    escalation:
+    - purpose-required
+    - human-in-the-loop
+    human-in-the-loop: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: TRANSACTION
+- tool: extend_subname_expiry
+  required:
+  - name
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    token:
+      max-ttl: 300
+    audit: required
+    escalation:
+    - purpose-required
+    - human-in-the-loop
+    human-in-the-loop: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: TRANSACTION
+- tool: approve_operator
+  required:
+  - owner
+  - operator
+  - contract
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    token:
+      max-ttl: 300
+    audit: required
+    escalation:
+    - purpose-required
+    - human-in-the-loop
+    human-in-the-loop: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: true
+      idempotentHint: true
+    provider-classification: TRANSACTION
+- tool: reclaim_name
+  required:
+  - name
+  - owner
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    token:
+      max-ttl: 900
+    audit: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: true
+      idempotentHint: true
+    provider-classification: TRANSACTION
+- tool: register_agent
+  required:
+  - name
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    token:
+      max-ttl: 300
+    audit: required
+    escalation:
+    - purpose-required
+    - human-in-the-loop
+    human-in-the-loop: required
+    provider-annotations:
+      readOnlyHint: false
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: TRANSACTION
+- tool: get_agent_reputation
+  required:
+  - nameOrWallet
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    provider-annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: FREE
+- tool: search_agent_directory
+  required: []
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    provider-annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: FREE
+- tool: get_caller_identity
+  required: []
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    provider-annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: FREE
+- tool: search_knowledge
+  required:
+  - query
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    provider-annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: FREE
+- tool: get_usage_stats
+  required: []
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+    provider-annotations:
+      readOnlyHint: true
+      destructiveHint: false
+      idempotentHint: false
+    provider-classification: FREE

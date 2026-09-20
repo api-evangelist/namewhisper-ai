@@ -1,0 +1,93 @@
+generated: '2026-09-19'
+method: probed
+source: https://namewhisper.ai/.well-known/agent-card.json
+card:
+  file: namewhisper-ai-agent-card.json
+discovery:
+  path: /.well-known/agent-card.json
+  canonical: true
+  host: namewhisper.ai
+  also_served_at:
+  - {url: 'https://namewhisper.ai/.well-known/agent.json', status: 200, note: identical body at the legacy pre-0.3 path}
+  - {url: 'https://www.namewhisper.ai/.well-known/agent-card.json', status: 200, note: 'www serves the same card directly (no redirect); the skills[] block is identical, the 24-byte size difference is whitespace'}
+  - {url: 'https://www.namewhisper.ai/.well-known/agent.json', status: 200, note: same body}
+  - {url: 'https://namewhisper.ai/a2a', method: GET, status: 308, note: a GET on the endpoint 308-redirects to the card}
+  note: >-
+    Served on the apex with content-type application/json; charset=utf-8 and an ETag. The card's provider.organization
+    is "NameWhisper" and provider.url is https://namewhisper.ai, the same host that serves it, so ownership is not in
+    question. The response carries Link headers (rel service-desc -> /.well-known/mcp.json, rel api-catalog, rel
+    payment -> /.well-known/x402, rel describedby -> /SKILL.md, /llms.txt, /llms-full.txt) that tie the card to the
+    rest of the discovery surface. The a2aregistry.org listing that surfaced this provider points at this same URL.
+x-evidence:
+  fetched: '2026-09-19'
+  url: https://namewhisper.ai/.well-known/agent-card.json
+  http_status: 200
+  content_type: application/json; charset=utf-8
+  body_parses_as: JSON object with AgentCard shape (name, url, version, protocolVersion, capabilities, skills all present)
+  endpoint_probe:
+    url: https://namewhisper.ai/a2a
+    method: POST message/send
+    status: 200
+    note: >-
+      An anonymous message/send carrying the text part "Is apievangelist.eth available?" returned HTTP 200 with a
+      result of kind "message" (role agent, a fresh messageId) whose text part answered the availability question
+      with the base registration price. The endpoint is live, anonymous and answers in the message (not Task)
+      shape. tasks/get returned JSON-RPC -32601 "Unknown method: tasks/get" over HTTP 400, consistent with the
+      card's capabilities (no streaming, no push notifications, no state-transition history).
+agent_card:
+  name: Name Whisper
+  url: https://namewhisper.ai/a2a
+  version: 1.0.0
+  protocol_version: 0.3.0
+  preferred_transport: JSONRPC
+  provider:
+    organization: NameWhisper
+    url: https://namewhisper.ai
+  documentation_url: https://namewhisper.ai/llms-full.txt
+  security: anonymous (no security or securitySchemes members in the card; the live endpoint answered without credentials)
+  capabilities:
+    streaming: false
+    push_notifications: false
+    state_transition_history: false
+  default_input_modes: [text/plain, application/json]
+  default_output_modes: [application/json]
+  skill_count: 44
+  skills_note: >-
+    The 44 skills mirror the 44 MCP tools one-for-one (same ids, same descriptions); each carries tags [ens, read]
+    or [ens, transaction] and inputModes/outputModes. The MCP tools/list is the schema-bearing form of the same
+    surface (mcp/namewhisper-ai-mcp-tools-list.json); the card lists names and descriptions only.
+  skill_ids: [search_ens_names, enumerate_entities, get_name_details, check_availability, get_similar_names, get_valuation,
+    get_market_activity, get_expiring_names, wash_check, get_wallet_portfolio, find_alpha, get_primary_name,
+    provision_agent_identity, make_offer, purchase_name, bulk_register, create_listing, cancel_listing, cancel_offer,
+    accept_offer, batch_purchase, sweep, batch_create_listings, renew_ens_name, transfer_ens_name, set_ens_records,
+    bulk_set_records, bulk_transfer_ens_names, set_primary_name, set_resolver, manage_ens_name, wrap_name, unwrap_name,
+    manage_fuses, mint_subnames, extend_subname_expiry, approve_operator, reclaim_name, register_agent,
+    get_agent_reputation, search_agent_directory, get_caller_identity, search_knowledge, get_usage_stats]
+grade_basis: >-
+  Graded against the A2A 1.0.0 hard checks: capabilities is an OBJECT (pass), protocolVersion is present (pass),
+  skills is an ARRAY of 44 (pass). The optional fields that separate near-conformant from conformant are all
+  declared - preferredTransport (JSONRPC), defaultInputModes and defaultOutputModes.
+deviations:
+- field: protocolVersion
+  observed: 0.3.0
+  note: Declares A2A 0.3.0 rather than 1.0.0. A version statement, not a shape failure - recorded, not penalised.
+- field: supportedInterfaces + additionalInterfaces
+  observed: 'both present; supportedInterfaces[0] carries url, transport, serviceUrl, transportProtocol, protocolBinding and protocolVersion all at once'
+  note: >-
+    The card hedges across schema generations: additionalInterfaces[].transport is the 0.3 shape, supportedInterfaces[]
+    .protocolBinding is the 1.0 shape, and the single interface object repeats the same JSONRPC binding under four
+    different property names so any reader finds one it recognises. Harmless, and arguably deliberate compatibility.
+- field: provider_registryListing
+  observed: ai.namewhisper/ens-tools
+  note: A non-standard top-level key naming the MCP Registry listing. Not part of any A2A schema; ignored by validators.
+- field: documentationUrl
+  observed: https://namewhisper.ai/llms-full.txt
+  note: Points at the agent-readable full reference rather than a human docs page (which is https://namewhisper.ai/docs). Valid, and arguably the right choice for an agent card.
+- field: response shape
+  observed: message/send returned kind "message", not a Task
+  note: Permitted by A2A 0.3 (a synchronous reply may be a Message); tasks/get is unimplemented, so there is no task lifecycle to query.
+conformance:
+  spec: A2A 1.0.0
+  grade: conformant
+  protocol_version: 0.3.0
+  preferred_transport: JSONRPC

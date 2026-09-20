@@ -1,0 +1,140 @@
+generated: '2026-09-19'
+method: searched
+source: >-
+  https://namewhisper.ai/llms-full.txt, /docs, /guide, /auth.md, /terms, the tools/list annotations in
+  mcp/namewhisper-ai-mcp-tools-list.json, and live probes of /mcp, /a2a and /api on 2026-09-19. There is no
+  OpenAPI; every convention below is read from the provider's agent-readable documents or observed.
+description: >-
+  How Name Whisper's agent surface behaves across calls: an anonymous MCP server over streamable-http with
+  per-session state, an anonymous A2A message/send endpoint, opt-in ERC-8128 request signing, dormant x402/MPP
+  payment negotiation, and a non-custodial write model in which every mutating tool returns unsigned Ethereum
+  calldata that only takes effect once the caller's wallet signs and broadcasts it.
+
+base_url: https://namewhisper.ai/mcp
+api_style: MCP (JSON-RPC 2.0 over streamable-http, SSE responses); A2A JSON-RPC at https://namewhisper.ai/a2a; undocumented REST twins under https://namewhisper.ai/api
+surfaces:
+- name: MCP server
+  url: https://namewhisper.ai/mcp
+  methods_implemented: [initialize, notifications/initialized, tools/list, tools/call]
+  methods_refused: [resources/list, prompts/list]
+  gated: false
+- name: A2A endpoint
+  url: https://namewhisper.ai/a2a
+  methods_implemented: [message/send]
+  methods_refused: [tasks/get]
+  gated: false
+- name: REST twins
+  url: https://namewhisper.ai/api
+  gated: false
+  note: >-
+    "Every MCP tool has a REST twin under /api/*. Use HTTP POST with JSON bodies matching the MCP tool parameter
+    schema" (/guide). No path list or spec is published, robots.txt disallows /api/, and the root answers an
+    x402 402 discovery body. Recorded as stated, not as a documented API; only create_listing's follow-up
+    POST /api/orderbook/submit (signature submission) is named anywhere.
+
+session:
+  header: mcp-session-id
+  established_by: initialize (the header is returned on the response and must be echoed on every later call)
+  idle_timeout: 30 minutes
+  without_session: HTTP 400 {"error":"Invalid or missing session ID"}
+
+authentication:
+  scheme: none by default; ERC-8128 signed HTTP requests optional (max validity 300 s, nonce replay protection, EIP-1271 smart wallets)
+  detail: authentication/namewhisper-ai-authentication.yml
+  scopes: scopes/namewhisper-ai-scopes.yml (mcp.read, mcp.transact)
+
+write_model:
+  custody: none
+  statement: '"Name Whisper never takes custody of names or funds. Every transaction is built for the user to sign in their own wallet" (security.txt); "Transaction tools build unsigned calldata - the user''s wallet signs; Name Whisper never holds keys" (SKILL.md).'
+  consequence: >-
+    A tools/call on any TRANSACTION tool has no on-chain effect by itself; it returns calldata (and, for
+    registration, a commit -> wait -> register recipe). The irreversible step is the wallet signature and
+    broadcast, which happens outside this API.
+
+idempotency:
+  supported: partial
+  coverage: partial
+  mechanism: tool annotations (idempotentHint) + ERC-8128 nonce replay protection for signed requests
+  scope: [cancel_listing, cancel_offer, set_ens_records, bulk_set_records, set_primary_name, set_resolver, manage_fuses, approve_operator, reclaim_name]
+  detail: >-
+    No Idempotency-Key header and no documented server-side replay cache for anonymous calls. Nine of the 25
+    write tools are annotated idempotentHint true by the server (the list above) - repeating them produces the
+    same calldata and the same on-chain end state. The other sixteen (purchase, register, renew, transfer, listing
+    and offer creation, wrap/unwrap, subnames, register_agent) are not: repeating them builds a second transaction
+    that, if signed, spends again. For callers who opt into ERC-8128, each signed request carries a nonce and a
+    300-second validity window and the server rejects replays ("replayProtection: true"), which is request-level
+    replay protection rather than operation-level idempotency, and it covers only signed traffic. Both mechanisms
+    are real and both are scoped, hence partial.
+  header: null
+  retention: 300 s validity window on ERC-8128 signatures; nonce store retention not stated
+
+reversibility:
+  status: documented
+  summary: >-
+    Listings and offers are reversible; registrations, renewals, transfers, fuse burns and record writes are
+    not, and the provider says so. No reversal window is stated for anything (a Seaport cancel works until the
+    order is filled or expires; the listing's own durationSeconds is the only time bound), so the grade is
+    documented, not verified.
+  surfaces:
+  - write: create_listing / batch_create_listings
+    reversal: cancel_listing
+    window: 'until the order is filled or expires (listing durationSeconds set at creation); no fixed window stated'
+    docs: https://namewhisper.ai/llms-full.txt
+    note: '"once mined the order is invalidated across all venues" - a Seaport cancel() transaction the seller signs; cross-posted OpenSea variants are cancelled atomically via alsoCancel.'
+  - write: make_offer
+    reversal: cancel_offer
+    window: 'until accepted or expired (expiryHours set at creation); no fixed window stated'
+    docs: https://namewhisper.ai/llms-full.txt
+  - write: approve_operator
+    reversal: approve_operator with approved false
+    window: any time before the operator acts
+    docs: https://namewhisper.ai/llms-full.txt
+  - write: wrap_name
+    reversal: unwrap_name
+    window: 'any time unless CANNOT_UNWRAP has been burned (manage_fuses)'
+    docs: https://namewhisper.ai/skills/names/SKILL.md
+  irreversible:
+  - write: purchase_name / batch_purchase / sweep / bulk_register / renew_ens_name
+    statement: '"Gas fees, registration costs, and marketplace fees are non-refundable" and Name Whisper "does not ... have the ability to reverse transactions" (terms, section 3).'
+  - write: transfer_ens_name / bulk_transfer_ens_names / accept_offer / register_agent
+    statement: On-chain transfers and fulfilments; terms section 3 applies.
+  - write: manage_fuses
+    statement: '"Irreversible" (llms-full.txt); burned fuses cannot be restored.'
+  - write: set_ens_records / bulk_set_records / set_primary_name / set_resolver
+    statement: Overwritable by a later write but no undo; each write is a new transaction and gas.
+
+dry_run:
+  status: na-by-design
+  note: >-
+    Every write tool IS a dry run in the conventional sense - it returns the transaction it would send, with the fee
+    broken out ("Every recipe returns the fee broken out so a client can show it before signing"), and nothing
+    executes until signed. There is no separate simulate flag because none is needed.
+
+pagination:
+  style: offset
+  params: [limit, offset]
+  applies_to: [get_market_activity, get_wallet_portfolio]
+  note: Read from the inputSchemas; most read tools take a limit only. No cursor pagination, no response envelope documented.
+
+errors:
+  envelope: JSON-RPC 2.0 error {code, message}; payment-required is -32042 with the challenge in _meta
+  detail: errors/namewhisper-ai-problem-types.yml
+
+rate_limits:
+  published: 200 req/min/IP and 60 req/min/session
+  headers: none observed
+  detail: rate-limits/namewhisper-ai-rate-limits.yml
+
+payments:
+  protocols: [x402 (USDC on Base, chainId 8453), MPP (pathUSD on Tempo)]
+  state: dormant - activeProtocol null, every tool free
+  interface_fees: plans/namewhisper-ai-plans-pricing.yml
+
+content_negotiation:
+  note: 'Human pages also serve markdown - "Pages for humans (also serve markdown with Accept: text/markdown)"; confirmed for /, /docs, /guide and /agents (text/markdown; charset=utf-8), not for /terms and /privacy.'
+
+versioning:
+  scheme: none
+  detail: lifecycle/namewhisper-ai-lifecycle.yml
+
+request_id: none documented (responses carry x-railway-request-id and cf-ray edge headers only)

@@ -1,0 +1,153 @@
+generated: '2026-09-19'
+method: probed
+source: live GET of the named /.well-known/ path list on every host this record knows (2026-09-19)
+hit_count: 12
+note: 'namewhisper.ai serves an unusually complete discovery surface from the apex: RFC 9116 security.txt (Contact,
+  Expires 2027-09-19, Canonical, Policy), RFC 8414 oauth-authorization-server metadata (issuer https://namewhisper.ai,
+  scopes mcp.read / mcp.transact, a non-standard erc8128_signed_request grant and an agent_auth registration block),
+  RFC 9728 oauth-protected-resource metadata for the MCP resource https://namewhisper.ai/mcp (authorization_servers
+  [https://namewhisper.ai], signing algs ES256K / EIP191 / EIP1271), an RFC 9727 api-catalog linkset (application/linkset+json)
+  naming the MCP server card, the auth documents, the agent-skills index, the x402 payment document and llms.txt,
+  a legacy ai-plugin.json whose api.type is mcp, an MCP server card at /.well-known/mcp.json, an x402 + MPP payment-discovery
+  document, an ERC-8128 discovery document, a 44-entry agent-skills index, and the A2A agent card at both the canonical
+  and legacy paths. openid-configuration is the one named path that 404s, so the authorization server publishes
+  RFC 8414 metadata but is not an OpenID Provider. The api-catalog and agent-card responses also carry Link headers
+  (rel service-desc, api-catalog, payment, describedby) pointing at the same set. The negative-control path returned
+  404 on both hosts, so the 200s are real documents and not a catch-all. The auth server and the MCP resource are
+  the same host as the website, so no third host needed probing; api./docs./mcp. subdomains do not resolve. WellKnown
+  and SecurityTxt pointers are emitted on the strength of these hits.'
+hosts:
+- host: https://namewhisper.ai
+  path_echo_control: passed
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/plain
+    file: namewhisper-ai-security.txt
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+    file: namewhisper-ai-oauth-authorization-server.json
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    content_type: application/json
+    file: namewhisper-ai-oauth-protected-resource.json
+  - path: /.well-known/api-catalog
+    status: 200
+    content_type: application/linkset+json
+    file: namewhisper-ai-api-catalog.json
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    content_type: application/json
+    file: namewhisper-ai-ai-plugin.json
+  - path: /.well-known/mcp.json
+    status: 200
+    content_type: application/json
+    file: namewhisper-ai-mcp.json
+  - path: /.well-known/x402
+    status: 200
+    content_type: application/json
+    file: namewhisper-ai-x402.json
+  - path: /.well-known/erc8128
+    status: 200
+    content_type: application/json
+    file: namewhisper-ai-erc8128.json
+  - path: /.well-known/agent-skills/index.json
+    status: 200
+    content_type: application/json
+    file: namewhisper-ai-agent-skills-index.json
+  - path: /.well-known/agent-card.json
+    status: 200
+    content_type: application/json
+    file: ../a2a/namewhisper-ai-agent-card.json
+    note: A2A agent card; recorded and graded in a2a/namewhisper-ai-a2a.yml
+  - path: /.well-known/agent.json
+    status: 200
+    content_type: application/json
+    file: ../a2a/namewhisper-ai-agent-card.json
+    note: A2A agent card; recorded and graded in a2a/namewhisper-ai-a2a.yml
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /llms.txt
+    status: 200
+    content_type: text/plain
+    file: ../llms/namewhisper-ai-llms.txt
+  - path: /.well-known/namewhisper-ai-negative-control-7e2a91c4.json
+    status: 404
+    note: negative control
+- host: https://www.namewhisper.ai
+  path_echo_control: passed
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/plain
+    note: same body as the apex
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+    note: same body as the apex
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    content_type: application/json
+    note: same body as the apex
+  - path: /.well-known/api-catalog
+    status: 200
+    content_type: application/linkset+json
+    note: same body as the apex
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    content_type: application/json
+    note: same body as the apex
+  - path: /.well-known/mcp.json
+    status: 200
+    content_type: application/json
+    note: same body as the apex
+  - path: /.well-known/x402
+    status: 200
+    content_type: application/json
+    note: same body as the apex
+  - path: /.well-known/erc8128
+    status: 200
+    content_type: application/json
+    note: same body as the apex
+  - path: /.well-known/agent-skills/index.json
+    status: 200
+    content_type: application/json
+    note: same body as the apex
+  - path: /.well-known/agent-card.json
+    status: 200
+    content_type: application/json
+    note: A2A agent card; recorded and graded in a2a/namewhisper-ai-a2a.yml
+  - path: /.well-known/agent.json
+    status: 200
+    content_type: application/json
+    note: A2A agent card; recorded and graded in a2a/namewhisper-ai-a2a.yml
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /llms.txt
+    status: 200
+    content_type: text/plain
+  - path: /.well-known/namewhisper-ai-negative-control-7e2a91c4.json
+    status: 404
+    note: negative control
+  note: www serves the same documents as the apex (identical bodies, HTTP 200, no redirect); not a distinct surface
+- host: https://api.namewhisper.ai
+  status: unresolved
+  note: hostname does not resolve (curl exit 6, 2026-09-19); the MCP server, auth server and docs all live on the
+    apex
+- host: https://docs.namewhisper.ai
+  status: unresolved
+  note: hostname does not resolve (curl exit 6, 2026-09-19); the MCP server, auth server and docs all live on the
+    apex
+- host: https://mcp.namewhisper.ai
+  status: unresolved
+  note: hostname does not resolve (curl exit 6, 2026-09-19); the MCP server, auth server and docs all live on the
+    apex

@@ -1,0 +1,135 @@
+generated: '2026-09-19'
+method: searched
+status: published
+source: https://namewhisper.ai/.well-known/mcp.json
+sources:
+- https://namewhisper.ai/.well-known/mcp.json
+- https://namewhisper.ai/mcp (live initialize + tools/list, 2026-09-19)
+- https://registry.modelcontextprotocol.io/v0/servers?search=namewhisper
+- https://github.com/eggybug42069/namewhisper-mcp
+- https://namewhisper.ai/docs
+description: >-
+  Name Whisper operates a public, anonymous remote MCP server at https://namewhisper.ai/mcp (streamable-http,
+  session header mcp-session-id) exposing 44 tools over ENS names: search, valuation, market data, portfolio,
+  and non-custodial transaction building for registration, renewal, Seaport listings/offers, records, NameWrapper
+  and ERC-8004 agent identity. The server card at /.well-known/mcp.json, the MCP Registry listing
+  ai.namewhisper/ens-tools (v1.2.0, 2026-07-31) and the live tools/list all agree on the endpoint and the tool
+  count. tools/list answered anonymously with a full inputSchema (JSON Schema draft-07) and annotations
+  (readOnlyHint / destructiveHint / idempotentHint) for every tool; the verbatim result is saved alongside as
+  namewhisper-ai-mcp-tools-list.json and is the provider's machine-readable contract - no OpenAPI is published
+  for the REST twins the docs say exist under /api/*.
+server:
+  name: nw-terminal
+  title: Name Whisper - ENS Intelligence for AI Agents
+  version: 2.0.0
+  transport: streamable-http
+  url: https://namewhisper.ai/mcp
+  session_header: mcp-session-id
+  protocol_versions: ['2024-11-05', '2025-06-18']
+  capabilities_declared: {tools: {listChanged: true}}
+  capabilities_probed:
+    tools/list: 200 (44 tools)
+    resources/list: JSON-RPC -32601 Method not found
+    prompts/list: JSON-RPC -32601 Method not found
+    note: the server card advertises resources and prompts capabilities; the live server implements tools only
+  auth: none required; ERC-8128 signed requests optional (see authentication/namewhisper-ai-authentication.yml)
+  protected_resource: well-known/namewhisper-ai-oauth-protected-resource.json
+  authorization_server: well-known/namewhisper-ai-oauth-authorization-server.json
+  server_card: well-known/namewhisper-ai-mcp.json
+  registry_listing:
+    registry: https://registry.modelcontextprotocol.io
+    name: ai.namewhisper/ens-tools
+    version: 1.2.0
+    published: '2026-07-31'
+    remotes: [{type: streamable-http, url: 'https://namewhisper.ai/mcp'}]
+    repository: https://github.com/eggybug42069/namewhisper-mcp
+  payments:
+    discovery: well-known/namewhisper-ai-x402.json
+    state: 'x402 (USDC on Base) and MPP (pathUSD on Tempo) both wired and dormant - activeProtocol null, every tool currentPrice 0 or null; GET /api answers 402 with an x402 accepts[] block whose maxAmountRequired is "0"'
+    payment_error: 'McpError -32042 with the challenge in _meta when a transaction tool requires payment (docs); not triggerable while the fee switch is dormant'
+local:
+  name: namewhisper-mcp
+  transport: stdio
+  install_advertised: npx -y namewhisper-mcp
+  source: https://github.com/eggybug42069/namewhisper-mcp
+  npm_published: false
+  note: >-
+    The README, the package.json (name namewhisper-mcp, version 1.2.0, bin namewhisper-mcp -> src/index.js,
+    AGPL-3.0) and the Claude Desktop / Cursor / Claude Code snippets all advertise npx -y namewhisper-mcp, but
+    registry.npmjs.org/namewhisper-mcp returned 404 {"error":"Not found"} and an npm search for "namewhisper"
+    returned 0 results on 2026-09-19, so the advertised install fails. The stdio server is runnable only from a
+    clone (node src/index.js). This is why deployment.mode is remote rather than both.
+deployment:
+  mode: remote
+  endpoint: https://namewhisper.ai/mcp
+  auth: none
+  verified: probed
+  checked: '2026-09-19'
+  probe:
+    initialize: 200 (text/event-stream; mcp-session-id issued; protocolVersion 2025-06-18; serverInfo nw-terminal 2.0.0)
+    notifications/initialized: 202
+    tools/list: 200 (44 tools with inputSchema + annotations)
+    unsessioned_post: 400 {"error":"Invalid or missing session ID"}
+tools_file: namewhisper-ai-mcp-tools-list.json
+tool_count: 44
+tool_classes:
+  read_only: 19
+  destructive: 19
+  idempotent: 9
+  free: 19
+  transaction: 25
+  note: >-
+    read_only/destructive/idempotent are the server's own annotations counted from tools/list; free/transaction
+    is the provider's classification from /.well-known/x402 and the server card. provision_agent_identity is
+    annotated readOnlyHint true (it returns recommendations and unsigned transactions) but classified FREE, while
+    every TRANSACTION tool returns unsigned calldata for the caller's wallet - the server never signs or broadcasts.
+tools:
+- {name: search_ens_names, class: FREE, description: Natural language search across 3.5M indexed ENS names (869K currently registered) with automatic intent detection.}
+- {name: enumerate_entities, class: FREE, description: List a finite real-world category (e.g. "F1 world champions") as verified ENS labels grouped by available vs registered.}
+- {name: get_name_details, class: FREE, description: 'Full metadata for a name: owner, expiry, listings, offers, ENSIP-25 agent bindings.'}
+- {name: check_availability, class: FREE, description: Bulk check registration status for multiple names.}
+- {name: get_similar_names, class: FREE, description: Semantic vector similarity search (256-dim embeddings) across the full ENS corpus.}
+- {name: get_valuation, class: FREE, description: Three-track valuation (comparable-sales, quality-reference, self-history) with confidence rating.}
+- {name: get_market_activity, class: FREE, description: 'Recent completed market events: sales, premium (Dutch-auction) registrations, and name-for-name swaps.'}
+- {name: get_expiring_names, class: FREE, description: Names by lifecycle window - expiring soon, in grace, or in the 21-day premium auction - with on-chain-validated status and live premium pricing.}
+- {name: wash_check, class: FREE, description: Detect suspicious wash-trading patterns in a name's sales history.}
+- {name: get_wallet_portfolio, class: FREE, description: All ENS names owned by a wallet with listings, offers, expiry, and tags.}
+- {name: find_alpha, class: FREE, description: Scan the marketplace for names listed below comparable-sales valuation.}
+- {name: get_primary_name, class: FREE, description: Resolve the ENS primary name for a wallet address.}
+- {name: manage_ens_name, class: FREE, description: 'Comprehensive management info for a name: status, expiry, wrapper state, recommendations.'}
+- {name: provision_agent_identity, class: FREE, description: One-call agent identity setup with ENS name recommendations and ENSIP-25 binding.}
+- {name: get_agent_reputation, class: FREE, description: Check ENSIP-25 bindings and ERC-8004 reputation for a name or wallet.}
+- {name: search_agent_directory, class: FREE, description: Find AI agents by capability, reputation, or name.}
+- {name: get_caller_identity, class: FREE, description: Return the authenticated caller identity derived from ERC-8128 signature.}
+- {name: search_knowledge, class: FREE, description: Search the ENS knowledge base (governance, protocol docs, forum, Farcaster).}
+- {name: get_usage_stats, class: FREE, description: 'Session usage statistics: tool call counts, success rates, latency.'}
+- {name: purchase_name, class: TRANSACTION, description: Buy a listed name or register an available name on-chain.}
+- {name: make_offer, class: TRANSACTION, description: Submit a bid on a registered ENS name.}
+- {name: bulk_register, class: TRANSACTION, description: Register up to 20 names in 2 transactions via Multicall3.}
+- {name: renew_ens_name, class: TRANSACTION, description: Renew a name or batch of names via Multicall3.}
+- {name: transfer_ens_name, class: TRANSACTION, description: Transfer name ownership (auto-detects wrapped vs unwrapped).}
+- {name: bulk_transfer_ens_names, class: TRANSACTION, description: Transfer up to 20 names in a single Multicall3 transaction.}
+- {name: set_ens_records, class: TRANSACTION, description: Set resolver records (addresses, texts, content hash, ENSIP-25 agent bindings).}
+- {name: bulk_set_records, class: TRANSACTION, description: Set records for up to 50 names in a single resolver multicall.}
+- {name: set_primary_name, class: TRANSACTION, description: Set the reverse resolution (primary name) for a wallet.}
+- {name: set_resolver, class: TRANSACTION, description: Change the resolver contract for a name.}
+- {name: wrap_name, class: TRANSACTION, description: Wrap a name into the ENS NameWrapper (ERC-721 -> ERC-1155).}
+- {name: unwrap_name, class: TRANSACTION, description: Unwrap a wrapped name back to the BaseRegistrar.}
+- {name: manage_fuses, class: TRANSACTION, description: Read or burn fuses on a wrapped name (irreversible).}
+- {name: mint_subnames, class: TRANSACTION, description: Bulk-create subnames under a parent name in one transaction.}
+- {name: extend_subname_expiry, class: TRANSACTION, description: Extend a subname's expiry up to the parent's expiry.}
+- {name: approve_operator, class: TRANSACTION, description: Approve or revoke an operator (setApprovalForAll) on the ENS contracts.}
+- {name: reclaim_name, class: TRANSACTION, description: Sync ENS Registry ownership with the BaseRegistrar token owner.}
+- {name: create_listing, class: TRANSACTION, description: List a name for sale via a Seaport 1.6 order (1% seller-paid fee).}
+- {name: cancel_listing, class: TRANSACTION, description: Cancel a listing via Seaport cancel() - invalidates the order on every venue once mined.}
+- {name: cancel_offer, class: TRANSACTION, description: Cancel an offer you made via Seaport cancel().}
+- {name: accept_offer, class: TRANSACTION, description: Accept a standing offer (atomic WETH <-> name fulfillOrder).}
+- {name: batch_purchase, class: TRANSACTION, description: Buy up to 20 specific listed names in one Seaport transaction.}
+- {name: sweep, class: TRANSACTION, description: Floor-sweep the cheapest N listed names in a category within a budget (max 20 per tx).}
+- {name: batch_create_listings, class: TRANSACTION, description: Bulk-list names with one EIP-712 bulk signature.}
+- {name: register_agent, class: TRANSACTION, description: Register an ENS name as an ERC-8004 agent identity on Ethereum mainnet.}
+crosswalk_note: >-
+  No tool crosswalk is emitted: there is no OpenAPI or GraphQL surface to bind the tools to. The docs state
+  "All MCP tools have equivalent REST endpoints under /api/*" and the agents page says "120+ REST endpoints",
+  but no REST reference or spec is published, robots.txt disallows /api/, and GET /api answers an x402 402
+  discovery body. The tools/list result is therefore the only contract, and it is saved verbatim.

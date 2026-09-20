@@ -1,0 +1,51 @@
+generated: '2026-09-19'
+method: searched
+source: https://namewhisper.ai/SKILL.md
+sources:
+- https://namewhisper.ai/SKILL.md
+- https://namewhisper.ai/skills/lifecycle/SKILL.md
+- https://namewhisper.ai/skills/names/SKILL.md
+- https://namewhisper.ai/skills/trading/SKILL.md
+- https://namewhisper.ai/skills/agents/SKILL.md
+- https://namewhisper.ai/.well-known/agent-skills/index.json
+description: >-
+  Provider-published Agent Skills, saved verbatim. Name Whisper ships a root SKILL.md (frontmatter name "ens";
+  linked from the agent card's Link header with rel describedby) that acts as an ENS correction layer for agents,
+  plus four topical skill files it routes to (lifecycle, names & data, trading, agent identity). Separately, the
+  /.well-known/agent-skills/index.json manifest lists 44 per-tool SKILL.md files (one per MCP tool, each with
+  version, FREE/TRANSACTION classification and an MCP invocation block); that index is saved in well-known/ and
+  one per-tool file was fetched to confirm the shape, but the 44 thin per-tool files are not mirrored here - the
+  schema-bearing form of each tool is the tools/list result in mcp/. Nothing in this directory was authored by
+  API Evangelist.
+skills:
+- file: namewhisper-ai-ens.md
+  name: ens
+  source: https://namewhisper.ai/SKILL.md
+  api: mcp/namewhisper-ai-mcp.yml
+  operations: [check_availability, get_valuation, get_expiring_names, renew_ens_name, purchase_name, set_ens_records, register_agent]
+  note: Root skill; headline ENS corrections (expiry vs availability, grace and premium windows, wrapped-name traps) and a task-to-skill routing table.
+- file: namewhisper-ai-ens-lifecycle.md
+  name: ens-lifecycle
+  source: https://namewhisper.ai/skills/lifecycle/SKILL.md
+  api: mcp/namewhisper-ai-mcp.yml
+  operations: [check_availability, get_expiring_names, purchase_name, bulk_register, renew_ens_name, manage_ens_name]
+- file: namewhisper-ai-ens-names.md
+  name: ens-names-data
+  source: https://namewhisper.ai/skills/names/SKILL.md
+  api: mcp/namewhisper-ai-mcp.yml
+  operations: [get_name_details, get_primary_name, set_ens_records, set_primary_name, set_resolver, mint_subnames, manage_fuses]
+- file: namewhisper-ai-ens-trading.md
+  name: ens-trading
+  source: https://namewhisper.ai/skills/trading/SKILL.md
+  api: mcp/namewhisper-ai-mcp.yml
+  operations: [get_market_activity, find_alpha, wash_check, create_listing, make_offer, accept_offer, cancel_listing, cancel_offer, batch_purchase, sweep]
+- file: namewhisper-ai-ens-agents.md
+  name: ens-agent-identity
+  source: https://namewhisper.ai/skills/agents/SKILL.md
+  api: mcp/namewhisper-ai-mcp.yml
+  operations: [provision_agent_identity, register_agent, get_agent_reputation, search_agent_directory, get_caller_identity]
+per_tool_index:
+  file: ../well-known/namewhisper-ai-agent-skills-index.json
+  url: https://namewhisper.ai/.well-known/agent-skills/index.json
+  count: 44
+  sample_fetched: {url: 'https://namewhisper.ai/.well-known/agent-skills/get_valuation/SKILL.md', status: 200, content_type: text/markdown}

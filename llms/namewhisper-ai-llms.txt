@@ -1,0 +1,60 @@
+# Name Whisper
+
+> ENS intelligence layer for AI agents. Natural-language search across 3.5M+
+> Ethereum Name Service names, comparable-sales valuation, cross-marketplace
+> trading, and agent-identity infrastructure (ENSIP-25 / ERC-8004).
+
+Name Whisper is the agent-native interface to ENS. Everything that a human can
+do through the UI at https://namewhisper.ai is also available to agents via the
+Model Context Protocol (MCP) over HTTP, with optional cryptographic
+per-request authentication (ERC-8128) and optional pay-per-call commerce
+(x402 on Base, or Machine Payments Protocol on Tempo).
+
+## For agents
+
+- Agent skill file — ENS corrections + task routing: https://namewhisper.ai/SKILL.md
+- MCP endpoint: https://namewhisper.ai/mcp (streamable-http transport)
+- MCP server card: https://namewhisper.ai/.well-known/mcp.json
+- Auth discovery (ERC-8128): https://namewhisper.ai/.well-known/oauth-protected-resource
+- Payment discovery (x402 + MPP): https://namewhisper.ai/.well-known/x402
+- Full tool reference: https://namewhisper.ai/llms-full.txt
+- Public registry listing: `ai.namewhisper/ens-tools` on the MCP Registry
+
+## Core capabilities
+
+- [Name search](https://namewhisper.ai/find): natural-language queries,
+  semantic vector similarity across 3.5M embedded names, bulk availability
+  checks, creative name generation.
+- [Valuation](https://namewhisper.ai/value): three-track model
+  (comparable-sales, quality-reference, self-history) with confidence ratings
+  and methodology narratives.
+- [Market intelligence](https://namewhisper.ai/marketplace): recent sales,
+  listings, offers, and transfers, plus a live activity feed and whale tracking.
+- [Trading](https://namewhisper.ai/marketplace): buy, sell, offer, batch-buy, and
+  floor-sweep via Seaport. Every order is a standard Seaport order on the shared
+  on-chain orderbook, so liquidity is pooled with the wider market including
+  OpenSea. ENS Vision is read as market data.
+- [Swaps](https://namewhisper.ai/swap): ENS-for-ENS atomic barter via a single
+  Seaport order (optional WETH on either side), no escrow.
+- [Portfolio](https://namewhisper.ai/portfolio): all names owned by a wallet,
+  with realised + unrealised P&L, expiry tracking, and batch management.
+- [Registration + management](https://namewhisper.ai/tools): register,
+  renew, transfer, set records, wrap/unwrap, manage fuses, mint subnames.
+- [Agent identity + hosting](https://namewhisper.ai/agents): ENSIP-25 binding,
+  ERC-8004 registration and reputation, agent directory, and hosted agents you
+  can launch on an ENS name at https://namewhisper.ai/launch.
+
+## Guides
+
+- [Developer docs](https://namewhisper.ai/docs)
+- [Agent integration guide](https://namewhisper.ai/guide)
+- [Agent identity landing](https://namewhisper.ai/agents)
+- [ENS name valuation — what a .eth name is worth](https://namewhisper.ai/ens-valuation)
+- [Expired ENS domains — lifecycle + how to catch releases](https://namewhisper.ai/expired-ens-domains)
+- [ENS grace period explained](https://namewhisper.ai/ens-grace-period)
+- [Bulk-renew ENS names in one transaction](https://namewhisper.ai/bulk-renew-ens)
+
+## Policies
+
+- [Terms of service](https://namewhisper.ai/terms)
+- [Privacy](https://namewhisper.ai/privacy)

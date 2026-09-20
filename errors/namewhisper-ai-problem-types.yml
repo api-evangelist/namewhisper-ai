@@ -1,0 +1,72 @@
+generated: '2026-09-19'
+method: probed
+source:
+- https://namewhisper.ai/mcp
+- https://namewhisper.ai/a2a
+- https://namewhisper.ai/api
+- https://namewhisper.ai/guide
+format: jsonrpc-2.0
+format_note: >-
+  Not RFC 9457. The guide states "All errors follow MCP standard shape: { error: { code, message } }" and that
+  transaction tools return McpError(-32042) when payment is required, with the challenge in _meta. Transport-level
+  failures on /mcp are a flat {"error": "<message>"} JSON body over HTTP 400; the A2A endpoint returns JSON-RPC
+  error objects over HTTP 400; the REST root answers an x402 402 body. There is no published error reference, so
+  every entry below was either observed live on 2026-09-19 or is stated in the guide.
+envelopes:
+- surface: mcp
+  shape: '{jsonrpc: "2.0", id, error: {code, message}} inside an SSE "event: message / data:" frame'
+  transport_status: 200
+  note: JSON-RPC errors arrive over HTTP 200 as SSE frames once a session exists; only the missing-session case is an HTTP 400.
+- surface: mcp (no session)
+  shape: '{"error": "Invalid or missing session ID"}'
+  transport_status: 400
+- surface: a2a
+  shape: '{jsonrpc: "2.0", id, error: {code, message}}'
+  transport_status: 400
+- surface: rest (/api root)
+  shape: 'x402 payment-required body {x402Version, error, accepts[], facilitator, documentation, mcpEndpoint}'
+  transport_status: 402
+problems:
+- id: mcp-missing-session
+  surface: mcp
+  http_status: 400
+  message: Invalid or missing session ID
+  observed: true
+  remediation: POST initialize first (Accept application/json, text/event-stream), read the mcp-session-id response header, and send it on every later call. Sessions idle out after 30 minutes (llms-full.txt).
+- id: jsonrpc-method-not-found
+  surface: mcp
+  jsonrpc_code: -32601
+  http_status: 200
+  message: Method not found
+  observed: true
+  triggers: [resources/list, prompts/list]
+  remediation: The server implements tools only, despite the server card advertising resources and prompts capabilities. Use tools/list and tools/call.
+- id: a2a-unknown-method
+  surface: a2a
+  jsonrpc_code: -32601
+  http_status: 400
+  message: 'Unknown method: tasks/get'
+  observed: true
+  remediation: Only message/send is implemented on /a2a (streaming, push and task history are all false in the card). Send a text part and read the Message result.
+- id: mcp-payment-required
+  surface: mcp
+  jsonrpc_code: -32042
+  message: payment required (challenge in _meta)
+  observed: false
+  source: https://namewhisper.ai/guide
+  remediation: Documented, not triggerable today - the x402/MPP fee switch is dormant and every tool's currentPrice is 0. When enabled, negotiate x402 (USDC on Base) or MPP (pathUSD on Tempo) per /.well-known/x402.
+- id: rest-x402-discovery
+  surface: rest
+  http_status: 402
+  message: Payment discovery (fee switch dormant - amount 0)
+  observed: true
+  note: GET https://namewhisper.ai/api returns this even though nothing is owed; it is a discovery body, and it names the MCP endpoint as the place to go.
+- id: not-found
+  surface: web
+  http_status: 404
+  message: Express default "Cannot GET <path>" HTML
+  observed: true
+  note: Unknown routes (e.g. /openapi.json, /pricing, /status, /changelog) return a ~150-byte HTML 404, so a 404 here is a true absence and not an SPA shell.
+rate_limit_exhaustion:
+  status: undocumented
+  note: The limits (200 req/min/IP, 60 req/min/session) are published but the status code and headers on exhaustion are not, and none were observed (rate-limits/namewhisper-ai-rate-limits.yml).

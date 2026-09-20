@@ -1,0 +1,49 @@
+generated: '2026-09-19'
+method: searched
+source: https://github.com/eggybug42069/namewhisper-mcp
+description: >-
+  First-party distributed software. Name Whisper ships no client SDK - agents talk MCP or A2A directly - so a
+  Packages pointer is emitted but no SDKs pointer. The one distributed package is the MCP server itself,
+  namewhisper-mcp, whose repository is named in the provider's own MCP Registry listing (ai.namewhisper/ens-tools)
+  and whose homepage is namewhisper.ai. npm, PyPI and a scoped @namewhisper/mcp were checked; nothing is published
+  despite the README's npm badge and npx instructions.
+packages:
+- language: javascript
+  registry: github
+  name: namewhisper-mcp
+  url: https://github.com/eggybug42069/namewhisper-mcp
+  install: 'git clone https://github.com/eggybug42069/namewhisper-mcp && cd namewhisper-mcp && npm install && node src/index.js'
+  official: true
+  version: 1.2.0
+  published: '2026-07-31'
+  license: AGPL-3.0
+  engines: node >=18.0.0
+  bin: {namewhisper-mcp: src/index.js}
+  mcp_name: ai.namewhisper/ens-tools
+  note: >-
+    Version read from package.json on main; date is the last push (2026-07-31T08:46:41Z), which matches the MCP
+    Registry's v1.2.0 publish (2026-07-31T08:52:33Z). Repository created 2026-04-25; 0 stars; owner is the
+    personal account eggybug42069 (also the package.json author). Official because the provider's registry entry,
+    server card contact and README all bind it to namewhisper.ai.
+- language: javascript
+  registry: npm
+  name: namewhisper-mcp
+  url: https://www.npmjs.com/package/namewhisper-mcp
+  install: npx -y namewhisper-mcp
+  official: true
+  version: null
+  published: null
+  note: >-
+    registry.npmjs.org/namewhisper-mcp returned 404 {"error":"Not found"} and the npm search API returned 0
+    results for "namewhisper" on 2026-09-19. The README's Claude Desktop, Cursor and Claude Code snippets and the
+    "npx namewhisper-mcp" direct-usage instruction therefore do not work; the only stdio distribution is the git
+    clone above. The remote endpoint https://namewhisper.ai/mcp is unaffected.
+- language: none
+  registry: mcp-registry
+  name: ai.namewhisper/ens-tools
+  url: https://registry.modelcontextprotocol.io/v0/servers?search=namewhisper
+  install: 'claude mcp add --transport http namewhisper https://namewhisper.ai/mcp'
+  official: true
+  version: 1.2.0
+  published: '2026-07-31'
+  note: Remote-only listing (remotes[] streamable-http https://namewhisper.ai/mcp, no packages[] block); earlier versions 1.0.0-1.0.2 (2026-03-26/27) listed 34 tools.

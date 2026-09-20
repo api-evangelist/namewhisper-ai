@@ -1,0 +1,45 @@
+generated: '2026-09-19'
+method: searched
+source:
+- https://namewhisper.ai/.well-known/mcp.json
+- https://registry.modelcontextprotocol.io/v0/servers?search=namewhisper
+- https://namewhisper.ai/terms
+- https://namewhisper.ai/docs
+versioning:
+  scheme: none published for the API surface
+  server_version: 2.0.0 (serverInfo in the server card and the live initialize response)
+  registry_versions: 1.0.0 (2026-03-26), 1.0.1 and 1.0.2 (2026-03-27), 1.2.0 (2026-07-31) on the MCP Registry - the tool count grew from 34 to 44 across them
+  mcp_protocol_versions: ['2024-11-05', '2025-06-18']
+  agent_card_version: 1.0.0
+  per_tool_version: 2.0.0 (every entry in /.well-known/agent-skills/index.json)
+  detail: >-
+    The MCP endpoint is unversioned in its URL (https://namewhisper.ai/mcp) and the REST twins under /api/* are
+    undocumented, so there is no versioning scheme to record. Version numbers exist in three places that do not
+    agree with each other (server 2.0.0, registry package 1.2.0, card 1.0.0), and none is accompanied by a policy.
+maturity:
+  stated: production
+  evidence: >-
+    The root SKILL.md says every claim "was learned operating a live ENS marketplace, valuation engine, and agent
+    platform in production"; the terms are dated August 2, 2026; contracts are source-verified on Etherscan.
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  detail: No deprecation policy, no changelog on the site, no RFC 8594 Sunset/Deprecation headers observed. The tools/list carries no deprecated flags.
+sla:
+  url: null
+  public_uptime_target: null
+  notes: >-
+    No SLA. The terms disclaim marketplace availability ("Listings may be stale, withdrawn, or filled") and the
+    x402 document says transaction tools "will require payment when the fee switch is flipped" - a forward-looking
+    commercial change with no notice period stated.
+status_page: null
+status_page_note: >-
+  /status returns 404. /mcp-stats is a public page of MCP usage statistics (tool call counts) and get_usage_stats
+  is a tool - telemetry, not an availability status page - so no StatusPage pointer is emitted.
+data_freshness:
+  source: https://namewhisper.ai/docs
+  name_metadata: synced every 5 minutes
+  listings: event-driven + 60-second reconciliation
+  sales_history: on-chain verified via receipt parsing
+deprecated_operations: []

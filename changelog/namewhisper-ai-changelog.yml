@@ -1,0 +1,42 @@
+generated: '2026-09-19'
+method: searched
+source: https://registry.modelcontextprotocol.io/v0/servers?search=namewhisper
+scope: >-
+  Name Whisper publishes no changelog page (/changelog 404) and the GitHub repository has no CHANGELOG.md. The
+  only dated version history the provider publishes is its own sequence of MCP Registry releases for
+  ai.namewhisper/ens-tools, transcribed here, plus the "Last updated" dates on the legal pages. The live server
+  reports version 2.0.0, which no registry release carries.
+scheme: semver on the MCP Registry listing; server reports its own version in serverInfo
+current_version: 1.2.0 (registry) / 2.0.0 (live serverInfo)
+current_date: '2026-07-31'
+entries:
+- version: 1.2.0
+  date: '2026-07-31'
+  title: ai.namewhisper/ens-tools 1.2.0
+  url: https://registry.modelcontextprotocol.io/v0/servers?search=namewhisper
+  breaking: false
+  additions:
+  - Tool count 34 -> 44 ("44 MCP tools to search, value, register, trade, and manage ENS names")
+  - repository (github.com/eggybug42069/namewhisper-mcp) and websiteUrl added to the listing
+  highlights: Current release; matches the tools/list count observed live.
+- version: 1.0.2
+  date: '2026-03-27'
+  title: ai.namewhisper/ens-tools 1.0.2
+  breaking: false
+  additions: ['Description adds "register, manage" to the tool summary']
+  highlights: 34 tools.
+- version: 1.0.1
+  date: '2026-03-27'
+  title: ai.namewhisper/ens-tools 1.0.1
+  breaking: false
+  additions: []
+  highlights: Republish, same description as 1.0.0.
+- version: 1.0.0
+  date: '2026-03-26'
+  title: ai.namewhisper/ens-tools 1.0.0
+  breaking: false
+  additions: ['First registry listing: 34 tools, remote streamable-http https://namewhisper.ai/mcp']
+legal_page_dates:
+- {page: 'https://namewhisper.ai/terms', last_updated: '2026-08-02'}
+- {page: 'https://namewhisper.ai/privacy', last_updated: '2026-03-21'}
+- {page: 'https://namewhisper.ai/.well-known/security.txt', expires: '2027-09-19'}
