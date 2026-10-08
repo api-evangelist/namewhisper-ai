@@ -55,3 +55,17 @@ agent_payments:
   mpp: {network: tempo, asset: pathUSD, enabled: false, testnet: true}
   marketplace_fee_pct_advertised: 2.5
   note: marketplaceFeePct 2.5 appears in the /api 402 body's accepts[] entry while the docs and terms state 1%; recorded as observed, the terms figure is the published commitment.
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - metered
+  units: []
+  plans:
+  - name: Free (all tools)
+    access: other
+    model: metered
+    model_how: derived
+    units: []
+    periods:
+    - none
