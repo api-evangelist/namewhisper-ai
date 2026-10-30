@@ -64,5 +64,128 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-NameWhisper is a company surfaced via the API Evangelist harvest backlog (source: a2a-registry) and added to the network as a stub for full-pipeline profiling.
-- https://namewhisper.ai/
+Name Whisper is an ENS (Ethereum Name Service) intelligence layer built for AI agents: natural-language search across 3.5M indexed .eth names, three-track valuation, live market data, wallet portfolios, and non-custodial transaction building for registration, renewal, Seaport listings and offers, resolver records, NameWrapper operations and ERC-8004 / ENSIP-25 agent identity. Everything is exposed as a public, anonymous remote MCP server at https://namewhisper.ai/mcp (44 tools, streamable-http, on the MCP Registry as ai.namewhisper/ens-tools) and an A2A 0.3.0 agent at https://namewhisper.ai/a2a, described by an agent card, an MCP server card, RFC 8414 / 9728 auth metadata, an RFC 9727 api-catalog, an llms.txt and provider-published Agent Skills. Identity is opt-in ERC-8128 signed requests; x402 and MPP payments are wired but dormant. The service never holds keys - every mutating tool returns unsigned calldata for the caller's wallet. No OpenAPI is published for the REST twins.
+
+**Areas:** ENS · Ethereum · Web3 · Domain Names · AI Agents · MCP · A2A · Valuation · NFT Marketplace · Agent Identity · Blockchain
+
+## NameWhisper on APIs.io
+
+Everything profiled for NameWhisper is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/namewhisper-ai/](https://apis.io/providers/namewhisper-ai/)** — or go straight to one of the APIs or properties below.
+
+### APIs (3)
+
+- [Name Whisper MCP Server](https://apis.io/apis/namewhisper-ai/namewhisper-mcp-server/) — Public, anonymous remote MCP server (streamable-http, session header mcp-session-id) exposing 44 tools over ENS names - 19 free read tools for search,…
+- [Name Whisper A2A Agent](https://apis.io/apis/namewhisper-ai/namewhisper-a2a-agent/) — The agent-to-agent surface: an anonymous A2A 0.3.0 JSON-RPC endpoint at https://namewhisper.ai/a2a whose agent card (served at both…
+- [Name Whisper REST API](https://apis.io/apis/namewhisper-ai/namewhisper-rest-api/) — The REST twins of the MCP tools. The docs state "All MCP tools have equivalent REST endpoints under /api/*. The JSON shapes are the same" and the guide says…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [Name Whisper - ENS Intelligence for AI Agents](https://apis.io/servers/namewhisper-ai/nw-terminal/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Namewhisper Ai Agentic Access](https://apis.io/agentic-access/namewhisper-ai/namewhisper-ai-agentic-access/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Namewhisper Ai Authentication](https://apis.io/security/namewhisper-ai/namewhisper-ai-authentication/)
+- [Namewhisper Ai Domain Security](https://apis.io/security/namewhisper-ai/namewhisper-ai-domain-security/)
+- [Namewhisper Ai Vulnerability Disclosure](https://apis.io/security/namewhisper-ai/namewhisper-ai-vulnerability-disclosure/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Namewhisper Ai Scopes](https://apis.io/scopes/namewhisper-ai/namewhisper-ai-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Namewhisper Ai Plans Pricing](https://apis.io/plans/namewhisper-ai/namewhisper-ai-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Namewhisper Ai Rate Limits](https://apis.io/rate-limits/namewhisper-ai/namewhisper-ai-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://namewhisper.ai/)
+- [Documentation](https://namewhisper.ai/docs)
+- [Getting started](https://namewhisper.ai/guide)
+- [API reference](https://namewhisper.ai/llms-full.txt)
+- [Pricing](https://namewhisper.ai/guide#fees)
+- [Support](https://x.com/namewhisper_ai)
+- [Security](https://namewhisper.ai/.well-known/security.txt)
+- [Terms of service](https://namewhisper.ai/terms)
+- [Privacy policy](https://namewhisper.ai/privacy)
+- [GitHub](https://github.com/eggybug42069)
+
+## API Evangelist rating
+
+**Kin Score 41.4** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 80.0 |
+| Contract quality | 0.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 50.0 |
+| Developer ergonomics | 52.4 |
+| Access clarity | 52.6 |
+
+**Agent readiness 41.6** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | yes |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | served (partial credit) |
+| Idempotency | documented (partial credit) |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | yes |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | conformant |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 40.2** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/namewhisper-ai/](https://apis.io/providers/namewhisper-ai/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for NameWhisper: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/namewhisper-ai/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
